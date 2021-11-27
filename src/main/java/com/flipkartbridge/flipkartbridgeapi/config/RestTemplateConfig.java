@@ -1,6 +1,5 @@
 package com.flipkartbridge.flipkartbridgeapi.config;
 
-import com.homedepot.common.util.web.logger.LoggingRequestInterceptor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -29,7 +28,6 @@ public class RestTemplateConfig {
                                                      long connectTimeout,
                                                      RestTemplateBuilder builder) {
         return builder.requestFactory(() -> new BufferingClientHttpRequestFactory(new SimpleClientHttpRequestFactory()))
-            .additionalInterceptors(new LoggingRequestInterceptor())
                 .setConnectTimeout(Duration.ofMillis(connectTimeout))
                 .setReadTimeout(Duration.ofMillis(readTimeout));
     }

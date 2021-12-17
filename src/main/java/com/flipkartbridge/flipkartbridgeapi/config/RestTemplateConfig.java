@@ -3,6 +3,7 @@ package com.flipkartbridge.flipkartbridgeapi.config;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,14 +15,13 @@ import java.time.Duration;
 
 @Configuration
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
+@EnableConfigurationProperties(FlipkartProxyProperties.class)
 public class RestTemplateConfig {
-
     @Bean(name = "restTemplateForShipmentApi")
-    //TODO: Just because we can't remove the config yet
-    public RestTemplate restTemplateForShipmentApi(@Value("${shipment.read.timeout}") long readTimeout,
-                                                       @Value("${shipment.connect.timeout}") long connectTimeout,
-                                                       RestTemplateBuilder builder) {
-        return generateRestTemplate(readTimeout, connectTimeout, builder).build();
+    public RestTemplate restTemplateForShipmentApi(RestTemplateBuilder builder,
+                                                   FlipkartProxyProperties flipkartProxyProperties) {
+        return generateRestTemplate(Long.parseLong(flipkartProxyProperties.getReadTimeout()),
+                Long.parseLong(flipkartProxyProperties.getConnectTimeout()), builder).build();
     }
 
     private RestTemplateBuilder generateRestTemplate(long readTimeout,

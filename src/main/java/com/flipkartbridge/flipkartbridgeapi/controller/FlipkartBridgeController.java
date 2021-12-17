@@ -1,6 +1,6 @@
 package com.flipkartbridge.flipkartbridgeapi.controller;
 
-import com.flipkartbridge.flipkartbridgeapi.model.Root;
+import com.flipkartbridge.flipkartbridgeapi.model.ShipmentResponse;
 import com.flipkartbridge.flipkartbridgeapi.service.FlipkartBridgeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class FlipkartBridgeController {
     private final FlipkartBridgeService flipkartBridgeService;
 
-    @GetMapping(name = "/shipments")
-    public ResponseEntity<Root> getShipments() {
-        return  ResponseEntity.ok(new Root());
+    @GetMapping(value = "/shipments")
+    public ResponseEntity<ShipmentResponse> getShipments() {
+        return  ResponseEntity.ok(flipkartBridgeService.getShipments());
     }
 }

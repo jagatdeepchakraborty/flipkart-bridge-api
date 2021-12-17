@@ -5,6 +5,6 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class Root {
+public class ShipmentResponse {
     public List<Shipment> shipments;
 }

@@ -1,4 +1,12 @@
-package com.flipkartbridge.flipkartbridgeapi.service;
+package com.flipkartbridge.flipkartbridgeapi.proxy;
+
+import com.flipkartbridge.flipkartbridgeapi.config.FlipkartProxyProperties;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Service;
 
 import javax.net.ssl.HttpsURLConnection;
 import java.io.BufferedReader;
@@ -10,22 +18,21 @@ import java.util.Base64;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-
+@Configuration
+@RequiredArgsConstructor(onConstructor_ = @Autowired)
 public class AccessTokenGenerator {
-
   private static final Pattern pat = Pattern.compile(".*\"access_token\"\\s*:\\s*\"([^\"]+)\".*");
-  private static final String clientId = "__CLIENT_ID__";  //clientId
-  private static final String clientSecret = "__CLIENT_SECRET__"; //client secret
-  private static final String tokenUrl = "https://sandbox-api.flipkart.net/oauth-service/oauth/token";
-  private static final String auth = clientId + ":" + clientSecret;
-  private static final String authentication = Base64.getEncoder().encodeToString(auth.getBytes());
+  private final FlipkartProxyProperties flipkartProxyProperties;
 
-  public static String getClientCredentialsAccessToken() {
-
+  public String getClientCredentialsAccessToken() {
+    String auth = flipkartProxyProperties.getClientId() + ":" +
+            flipkartProxyProperties.getClientSecret();
+    String authentication = Base64.getEncoder().encodeToString(auth.getBytes());
     BufferedReader reader = null;
     HttpsURLConnection connection = null;
     String returnValue = "";
-    String urlWithScope = tokenUrl + "?grant_type=client_credentials&scope=Seller_Api";
+    String urlWithScope = flipkartProxyProperties.getHost()
+            + flipkartProxyProperties.getTokenPath();
     try {
       URL url = new URL(urlWithScope);
       connection = (HttpsURLConnection) url.openConnection();

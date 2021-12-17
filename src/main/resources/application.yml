@@ -1,0 +1,10 @@
+proxy:
+  flipkart:
+    client-id: 1489a49a10b39b977001b880064319a37869
+    client-secret: 1881597fc9d4bc3d5ebc2f7846d76ff6f
+    host: https://sandbox-api.flipkart.net
+    token-path: /oauth-service/oauth/token?grant_type=client_credentials&scope=Seller_Api
+    shipmentByOrderId-path: /sellers/v3/shipments?orderIds=%s
+    read-timeout: 30000
+    connect-timeout: 30000
+
